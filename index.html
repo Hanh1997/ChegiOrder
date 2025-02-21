@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Bán Đồ Ăn Sáng</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.2.6/css/dx.light.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff9800;
+            padding: 15px 30px;
+            color: white;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .cart {
+            font-size: 20px;
+        }
+        .banner {
+            text-align: center;
+            padding: 50px;
+            background-color: #ffcc80;
+        }
+        .banner button {
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .products {
+            text-align: center;
+            padding: 50px;
+        }
+        .product-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .product {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 200px;
+        }
+        .order-form {
+            background-color: white;
+            padding: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🍳 Bữa Sáng Ngon</div>
+        <nav>
+            <ul class="nav">
+                <li class="nav-item"><a class="nav-link text-white" href="#home">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#menu">Thực đơn</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#about">Giới thiệu</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#contact">Liên hệ</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#order">Đặt hàng</a></li>
+            </ul>
+        </nav>
+        <div class="cart">🛒 <span>0</span></div>
+    </header>
+    
+    <section class="banner">
+        <h1>Bữa sáng ngon, khởi đầu ngày mới tràn đầy năng lượng!</h1>
+        <p>Thực đơn đa dạng, tươi ngon và giàu dinh dưỡng.</p>
+        <button class="btn btn-danger">Đặt hàng ngay</button>
+    </section>
+    
+    <section id="order" class="order-form container">
+        <div class="col-md-6">
+            <div id="name"></div>
+         </div>
+         <div class="col-md-6">
+             <div id="phone"></div>
+         </div>
+         <div class="col-md-12">
+            <div id="address"></div>
+         </div>
+         <div class="col-md-10">
+             <div id="menu"></div>
+         </div>
+         <div class="col-md-2">
+           <div id="quantity"></div>
+         </div>
+         <div class="col-md-12">
+             <div id="note"></div>
+         </div>
+         <div class="col-12">
+             <button type="button" id="send_order" class="btn btn-success">Đặt hàng</button>
+         </div>
+    </section>
+    
+    <footer class="text-center bg-dark text-white p-3">
+        <p>📍 Địa chỉ: An Khánh - Hoài Đức - Hà Nội</p>
+        <p>📞 Số điện thoại: 0365997303</p>
+        <p>📧 Email: havytran.hd@gmail.com</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn3.devexpress.com/jslib/22.2.6/js/dx.all.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+    const lst_menu = [{"code":"Egg","name":"Trứng"},{"code":"Corn","name":"Bắp"},{"code":"Potato","name":"Khoai lang"}]
+    $(function () {
+        inIt.gen_control();
+    });
+    $(document).ready(function () {
+        var botToken = "6748137268:AAFipIR5uX7T954HfNPuH47Gq2hvv74HP0k";  // Thay bằng Bot Token
+        var chatId = "6184705478";  // Thay bằng Chat ID
+        $("#send_order").click(function () {func.push_telegram(botToken,chatId)});
+    });
+    let inIt = {
+        gen_control : async () => 
+        {
+            $("#name").dxTextBox({  label: 'Họ và tên',stylingMode: 'outlined',labelMode: 'static'});
+            $("#phone").dxTextBox({  label: 'Số điện thoại',stylingMode: 'outlined',labelMode: 'static'});
+            $("#address").dxTextBox({  label: 'Địa chỉ',stylingMode: 'outlined',labelMode: 'static'});
+            $("#menu").dxSelectBox({
+                dataSource : lst_menu,
+                displayExpr: "name",
+                valueExpr: "code",
+                placeholder: "Chọn món...",
+                label: 'Chọn món',
+                value: "Egg",
+                searchEnabled: true,
+                searchMode: "contains",
+                searchExpr: ["code", "name"]
+            });
+            $("#quantity").dxNumberBox({
+                value: 1,
+                label: 'Số lượng',
+                stylingMode: 'outlined',
+                labelMode: 'static',
+                format: "fixedPoint"
+            });
+            $("#note").dxTextArea({  label: 'Ghi chú',height: 90,stylingMode: 'outlined',labelMode: 'static'});
+        }
+    }
+    let func = {
+        push_telegram : (botToken,chatId) =>
+            {
+                var name = $("#name").dxTextBox("instance").option("value");
+                var phone = $("#phone").dxTextBox("instance").option("value");
+                var address = $("#address").dxTextBox("instance").option("value");
+                var menu = $("#menu").dxSelectBox("instance").option("text");
+                var quantity = $("#quantity").dxNumberBox("instance").option("value");
+                var note = $("#note").dxTextArea("instance").option("value");
+
+                let str_order = `Tên: ${name}| SĐT: ${phone}| Địa chỉ: ${address}| Món: ${menu}| SL :${quantity}| Ghi chú: ${note}`
+
+                        $.ajax({
+                            url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+                            method: "POST",
+                            data: {
+                                chat_id: chatId,
+                                text: str_order
+                            },
+                            success: function (response) {
+                                alert("Tin nhắn đã được gửi!");
+                                console.log(response);
+                            },
+                            error: function (error) {
+                                alert("Lỗi khi gửi tin nhắn!");
+                                console.log(error);
+                            }
+                        });
+            }
+    }
+
+    
+</script>
