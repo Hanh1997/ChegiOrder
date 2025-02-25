@@ -236,7 +236,18 @@
                 label: 'Công ty',
                 searchEnabled: true,
                 searchMode: "contains",
-                searchExpr: ["code"]
+                searchExpr: ["code"],
+                onValueChanged: function (e) {
+                    if(e.value == "SUNHOUSE")
+                    {
+                       $("#address").dxTextBox("instance").option("value","35 Mac Thai To - Yen Hoa - Cau Giay - HN");
+                    }
+                    if(e.value == "KOBLER")
+                    {
+                        $("#address").dxTextBox("instance").option("value","An Khanh - Hoai Duc - Ha Noi");
+                    }
+                    
+                } 
             });
             
 
